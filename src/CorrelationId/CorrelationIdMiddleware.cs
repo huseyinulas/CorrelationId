@@ -39,7 +39,7 @@ namespace CorrelationId
             if (_options.UpdateTraceIdentifier)
                 context.TraceIdentifier = correlationId;
 
-            correlationContextFactory.Create(correlationId, _options.Header);
+            correlationContextFactory.Create(correlationId);
 
             if (_options.IncludeInResponse)
             {

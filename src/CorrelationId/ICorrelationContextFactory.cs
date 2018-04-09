@@ -1,10 +1,20 @@
-﻿namespace CorrelationId
+﻿using System;
+
+namespace CorrelationId
 {
     /// <summary>
     /// A factory for creating and disposing an instance of a <see cref="CorrelationContext"/>.
     /// </summary>
     public interface ICorrelationContextFactory
     {
+        /// <summary>
+        /// Creates a new <see cref="CorrelationContext"/> with the correlation ID set for the current request.
+        /// </summary>
+        /// <param name="correlationId">The correlation ID to set on the context.</param>
+        /// <returns>A new instance of a <see cref="CorrelationContext"/>.</returns>
+        [Obsolete("This overload of create is depreciated. It's expected that the overload which accepts the correlation id and a header be used instead. This overload will be remove in a future release.")]
+        CorrelationContext Create(string correlationId);
+
         /// <summary>
         /// Creates a new <see cref="CorrelationContext"/> with the correlation ID set for the current request.
         /// </summary>
