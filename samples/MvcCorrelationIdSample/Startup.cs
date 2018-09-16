@@ -20,7 +20,7 @@ namespace MvcCorrelationIdSample
         {
             services.AddMvc();
 
-            services.AddCorrelationId();
+            services.AddCorrelationId<FixedCorrelationIdProvider>();
 
             services.AddScoped<ScopedClass>();
             services.AddTransient<TransientClass>();
