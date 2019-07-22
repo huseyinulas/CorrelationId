@@ -30,8 +30,3 @@ app.UseCorrelationId(new CorrelationIdOptions
 
 ## Installation
 
-You should install [CorrelationId with NuGet](https://www.nuget.org/packages/CorrelationId/):
-
-    Install-Package CorrelationId
-
-This command from Package Manager Console will download and install CorrelationId and all required dependencies.
