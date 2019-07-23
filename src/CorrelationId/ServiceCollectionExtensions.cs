@@ -13,5 +13,13 @@ namespace CorrelationId
            .AddHttpMessageHandler<UserAgentMessageHandler>()
            .ConfigureHttpClient(action);
         }
+
+        public static IHttpClientBuilder AddCustomHttpClient<T, U>(this IServiceCollection services, Action<HttpClient> action) where U : class, T where T : class
+        {
+            return services.AddHttpClient<T, U>()
+           .AddHttpMessageHandler<CorrelationIdMessageHandler>()
+           .AddHttpMessageHandler<UserAgentMessageHandler>()
+           .ConfigureHttpClient(action);
+        }
     }
 }
