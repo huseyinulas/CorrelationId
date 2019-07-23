@@ -3,6 +3,9 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using System;
+using System.Net.Http;
+using System.Web.Http;
 
 namespace MvcCorrelationIdSample
 {
@@ -22,9 +25,15 @@ namespace MvcCorrelationIdSample
 
             services.AddCorrelationId();
 
+            services.AddCustomHttpClient<ServiceAProxy>(cfg =>
+           {
+               cfg.BaseAddress = new Uri("http://xxxxxxx.com");
+           });
+
             services.AddScoped<ScopedClass>();
             services.AddTransient<TransientClass>();
             services.AddSingleton<SingletonClass>();
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -40,4 +49,6 @@ namespace MvcCorrelationIdSample
             app.UseMvc();
         }
     }
+
+    
 }
