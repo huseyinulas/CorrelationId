@@ -11,7 +11,39 @@ This is intended for cases where you have multiple API services that may pass a 
 
 The TraceIdentifier on the HttpContext will be used for new requests and additionally set a header on the response. In cases where the incoming request includes an existing correlation ID in the header, the TraceIdentifier will be updated to that ID. This allows logging and diagnostics to be correlated for a single user transaction and to track the path of a user request through multiple API services.
 
-Examples in the [wiki](https://github.com/stevejgordon/CorrelationId/wiki).
+This repository forked from stevejgordon CorrelationID repository. 
+
+I added Correlationid and UserAgent headers to outgoing http calls to keep simple tracking through api to api calls. It uses stevejgordon correlation context for adding correlation id to outgoing http headers.  
+
+UserAgent headers is added also every outgoing http requests. Its values are taken from executing assembly name and version.
+
+HttpClient registiration is wrapped not to add outgoing delegating handlers every HttpClient object.
+
+# Usage
+
+```  
+public void ConfigureServices(IServiceCollection services)
+{
+    services.AddCorrelationId();
+    
+    services.AddCustomHttpClient<ServiceAProxy>(cfg =>
+                                                    {
+                                                       cfg.BaseAddress = new Uri("http://localhost:51827");
+                                                    });
+    ......
+}
+```
+
+```  
+public void Configure(IApplicationBuilder app, IHostingEnvironment env)
+{
+   app.UseCorrelationId(new CorrelationIdOptions
+                                 {
+                                     UseGuidForCorrelationId = true  //Default False
+                                 });
+    ......
+}
+```
 
 ## Known Issue with ASP.NET Core 2.2.0
 
