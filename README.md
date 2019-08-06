@@ -1,9 +1,7 @@
 # Correlation ID Middleware
 
-[![NuGet](https://img.shields.io/nuget/v/CorrelationId.svg)](https://www.nuget.org/packages/CorrelationId)
-[![NuGet](https://img.shields.io/nuget/dt/CorrelationId.svg)](https://www.nuget.org/packages/CorrelationId)
-[![Build Status](https://travis-ci.org/stevejgordon/CorrelationId.svg?branch=dev)](https://travis-ci.org/stevejgordon/CorrelationId)
-[![Build Status](https://stevejgordon.visualstudio.com/CorrelationId/_apis/build/status/stevejgordon.CorrelationId)](https://stevejgordon.visualstudio.com/CorrelationId/_build/latest?definitionId=1)
+[![NuGet](https://img.shields.io/nuget/v/TY.CorrelationId.svg)](https://www.nuget.org/packages/TY.CorrelationId)
+[![NuGet](https://img.shields.io/nuget/dt/TY.CorrelationId.svg)](https://www.nuget.org/packages/TY.CorrelationId)
 
 This repo contains middleware for syncing a TraceIdentity (correlation ID) across ASP.NET Core APIs.
 
