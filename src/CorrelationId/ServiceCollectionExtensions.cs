@@ -10,7 +10,6 @@ namespace CorrelationId
         {
             return services.AddHttpClient<T>()
            .AddHttpMessageHandler<CorrelationIdMessageHandler>()
-           .AddHttpMessageHandler<UserAgentMessageHandler>()
            .ConfigureHttpClient(action);
         }
 
@@ -18,7 +17,6 @@ namespace CorrelationId
         {
             return services.AddHttpClient<T, U>()
            .AddHttpMessageHandler<CorrelationIdMessageHandler>()
-           .AddHttpMessageHandler<UserAgentMessageHandler>()
            .ConfigureHttpClient(action);
         }
     }

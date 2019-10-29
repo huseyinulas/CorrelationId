@@ -1,5 +1,8 @@
-﻿using Microsoft.AspNetCore;
+﻿using System.IO;
+
+using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.Extensions.Hosting;
 
 namespace MvcCorrelationIdSample
 {
@@ -7,12 +10,15 @@ namespace MvcCorrelationIdSample
     {
         public static void Main(string[] args)
         {
-            BuildWebHost(args).Run();
-        }
+            var host = new HostBuilder()
+                       .UseContentRoot(Directory.GetCurrentDirectory())
+                       .ConfigureWebHostDefaults(webBuilder =>
+                                                 {
+                                                     webBuilder.UseStartup<Startup>();
+                                                 })
+                       .Build();
 
-        public static IWebHost BuildWebHost(string[] args) =>
-            WebHost.CreateDefaultBuilder(args)
-                .UseStartup<Startup>()
-                .Build();
+            host.Run();
+        }
     }
 }

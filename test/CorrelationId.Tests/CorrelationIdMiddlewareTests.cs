@@ -289,13 +289,6 @@ namespace CorrelationId.Tests
                 .Configure(app =>
                 {
                     app.UseCorrelationId(options);
-
-                    app.Use(async (ctx, next) =>
-                    {
-                        var accessor = ctx.RequestServices.GetService<ICorrelationContextAccessor>();
-                        await ctx.Response.WriteAsync(accessor.CorrelationContext.Header);
-                        await next();
-                    });
                 })
                 .ConfigureServices(sc => sc.AddCorrelationId());
 
@@ -303,9 +296,8 @@ namespace CorrelationId.Tests
 
             var response = await server.CreateClient().GetAsync("");
 
-            var body = await response.Content.ReadAsStringAsync();
-
-            Assert.Equal(body, options.Header);
+            var actual = response.Headers.ToList().Select(i => i.Key).FirstOrDefault();
+            Assert.Equal(actual , options.Header);
         }
 
         [Fact]
@@ -322,10 +314,10 @@ namespace CorrelationId.Tests
                     app.UseCorrelationId(options);
 
                     app.Use(async (ctx, next) =>
-                    {
-                        await ctx.Response.WriteAsync(ctx.TraceIdentifier);
-                        await next();
-                    });
+                            {
+                                ctx.Response.Headers.Add("TraceIdentifier", ctx.TraceIdentifier);
+                                await next();
+                            });
                 })
                 .ConfigureServices(sc => sc.AddCorrelationId());
 
@@ -335,14 +327,15 @@ namespace CorrelationId.Tests
             request.Headers.Add(expectedHeaderName, expectedHeaderValue);
 
             var response = await server.CreateClient().SendAsync(request);
-            
-            var body = await response.Content.ReadAsStringAsync();
 
-            Assert.NotEqual(body, expectedHeaderValue);
+            var traceIdentifier = response.Headers.ToList().FirstOrDefault(i => i.Key == "TraceIdentifier").Value.ToString();
+
+            Assert.NotNull(traceIdentifier);
+            Assert.NotEqual(traceIdentifier, expectedHeaderValue);
         }
 
         [Fact]
-        public async Task TraceIdentifier_IsNotUpdated_WhenUpdateTraceIdentifierIsTrue()
+        public async Task TraceIdentifier_IsUpdated_WhenUpdateTraceIdentifierIsTrue()
         {
             var options = new CorrelationIdOptions { UpdateTraceIdentifier = true };
 
@@ -356,7 +349,7 @@ namespace CorrelationId.Tests
 
                     app.Use(async (ctx, next) =>
                     {
-                        await ctx.Response.WriteAsync(ctx.TraceIdentifier);
+                        ctx.Response.Headers.Add("TraceIdentifier", ctx.TraceIdentifier);
                         await next();
                     });
                 })
@@ -369,9 +362,10 @@ namespace CorrelationId.Tests
 
             var response = await server.CreateClient().SendAsync(request);
 
-            var body = await response.Content.ReadAsStringAsync();
+            var traceIdentifier = response.Headers.GetValues("TraceIdentifier").FirstOrDefault();
 
-            Assert.Equal(body, expectedHeaderValue);
+            Assert.NotNull(traceIdentifier);
+            Assert.Equal(traceIdentifier, expectedHeaderValue);
         }
 
         private class SingletonClass

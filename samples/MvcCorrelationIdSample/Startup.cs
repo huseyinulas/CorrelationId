@@ -5,7 +5,8 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Net.Http;
-using System.Web.Http;
+
+using Microsoft.Extensions.Hosting;
 
 namespace MvcCorrelationIdSample
 {
@@ -21,8 +22,7 @@ namespace MvcCorrelationIdSample
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddMvc();
-
+            services.AddControllers();
             services.AddCorrelationId();
 
             services.AddCustomHttpClient<ServiceAProxy>(cfg =>
@@ -37,7 +37,7 @@ namespace MvcCorrelationIdSample
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
             if (env.IsDevelopment())
             {
@@ -46,7 +46,12 @@ namespace MvcCorrelationIdSample
 
             app.UseCorrelationId();
 
-            app.UseMvc();
+            app.UseRouting();
+
+            app.UseEndpoints(endpoints =>
+                             {
+                                 endpoints.MapControllers();
+                             });
         }
     }
 

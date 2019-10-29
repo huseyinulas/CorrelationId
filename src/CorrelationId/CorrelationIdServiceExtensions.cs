@@ -15,7 +15,6 @@ namespace CorrelationId
         public static IServiceCollection AddCorrelationId(this IServiceCollection serviceCollection)
         {
             serviceCollection.AddTransient<CorrelationIdMessageHandler>();
-            serviceCollection.AddTransient<UserAgentMessageHandler>();
 
             serviceCollection.TryAddSingleton<ICorrelationContextAccessor, CorrelationContextAccessor>();
             serviceCollection.TryAddTransient<ICorrelationContextFactory, CorrelationContextFactory>();

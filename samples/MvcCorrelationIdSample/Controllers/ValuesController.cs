@@ -29,20 +29,28 @@ namespace MvcCorrelationIdSample.Controllers
 
         // GET api/values
         [HttpGet]
-        public async Task<IEnumerable<string>> Get()
+        public async Task<IActionResult> Get()
         {
             var correlation = _correlationContext.CorrelationContext.CorrelationId;
 
             await _serviceAProxy.Get();
 
-            return new[]
-            {
+            return Ok(new string[] {
                 $"DirectAccessor={correlation}",
                 $"Transient={_transient.GetCorrelationFromScoped}",
                 $"Scoped={_scoped.GetCorrelationFromScoped}",
                 $"Singleton={_singleton.GetCorrelationFromScoped}",
                 $"TraceIdentifier={HttpContext.TraceIdentifier}"
-            };
-        }
+            });
+
+        //return  Ok
+        //{
+        //    $"DirectAccessor={correlation}",
+        //    $"Transient={_transient.GetCorrelationFromScoped}",
+        //    $"Scoped={_scoped.GetCorrelationFromScoped}",
+        //    $"Singleton={_singleton.GetCorrelationFromScoped}",
+        //    $"TraceIdentifier={HttpContext.TraceIdentifier}"
+        //};
+    }
     }
 }
