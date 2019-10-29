@@ -11,10 +11,7 @@
     <description>TY.CorrelationId</description>
     <summary>TY.CorrelationId</summary>
     <copyright></copyright>
-    <tags></tags>
-    <dependencies>
-    <dependency  id="Microsoft.AspNetCore.Mvc.Core" version="2.1.0" />
-    </dependencies>
+    <tags>CorrelationId</tags>
   </metadata>
   <files>
     <file src="bin\Release\netstandard2.1\CorrelationId.dll"  target="lib/dotnet" />
